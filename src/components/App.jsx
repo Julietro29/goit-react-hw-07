@@ -1,26 +1,28 @@
+// App.jsx
 import { useEffect } from 'react';
-import { nanoid } from '@reduxjs/toolkit';
 import { useSelector, useDispatch } from 'react-redux';
 import { Title } from './Title/Title';
 import { ContactsList } from './ContactList/ContactsList';
 import { SearchBox } from './SearchBox/SearchBox';
 import { ContactForm } from './ContactForm/ContactForm';
-import { addContact, deleteContact } from '../redux/contactsSlice';
+import { fetchContacts, selectFilteredContacts, selectLoading } from '../redux/contactsSlice';
 import { changeFilter } from '../redux/filtersSlice';
 
 import { SEARCH_LABEL, TITLE } from '../auxiliary/constants';
 import styles from './App.module.css';
 
 const App = () => {
-  const contacts = useSelector(state => state.contacts.items);
+  const contacts = useSelector(selectFilteredContacts);
   const filter = useSelector(state => state.filters.name);
+  const loading = useSelector(selectLoading);
   const dispatch = useDispatch();
   
-  // useEffect(() => {
-  // }, []);
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   const handleAddContact = newContact => {
-    dispatch(addContact({ ...newContact, id: nanoid() }));
+    dispatch(addContact({ ...newContact }));
   };
 
   const handleDeleteContact = id => {
@@ -31,10 +33,6 @@ const App = () => {
     dispatch(changeFilter(event.target.value));
   };
 
-  const filteredContacts = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(filter.toLowerCase())
-  );
-
   return (
     <div className={styles.container}>
       <Title>{TITLE}</Title>
@@ -42,10 +40,14 @@ const App = () => {
       <SearchBox value={filter} onChange={handleChangeSearch}>
         {SEARCH_LABEL}
       </SearchBox>
-      <ContactsList
-        contacts={filteredContacts}
-        onDeleteContact={handleDeleteContact}
-      />
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <ContactsList
+          contacts={contacts}
+          onDeleteContact={handleDeleteContact}
+        />
+      )}
     </div>
   );
 };

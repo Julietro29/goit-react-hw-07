@@ -1,13 +1,14 @@
 .info {
     display: flex;
     flex-direction: column;
-    row-gap: 16px;
+    row-gap: 10px;
 }
 
 .name,
 .phone {
     font-size: 16px;
     font-weight: 400;
+    margin: 6px;
 }
 
 @media screen and (min-width: 768px) {

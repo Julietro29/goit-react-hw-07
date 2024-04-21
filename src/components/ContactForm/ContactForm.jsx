@@ -1,42 +1,33 @@
-import { useId } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-
-import { INITIAL_CONTACT } from '../../auxiliary/constants';
+import { useDispatch } from 'react-redux';
+import { addContact } from '../../redux/contactsOps';
 import { Feedback } from '../../auxiliary/feedback';
-
-import {
-  LABEL_NAME,
-  LABEL_PHONE,
-  CAPTION_ADD,
-} from '../../auxiliary/constants';
-
 import { CustomButton } from '../CustomButton/CustomButton';
 import styles from './ContactForm.module.css';
 
-export const ContactForm = ({ onAddContact }) => {
-  const nameId = useId();
-  const phoneId = useId();
+export const ContactForm = () => {
+  const dispatch = useDispatch();
 
   const handleSubmit = (values, actions) => {
-    onAddContact(values);
+    dispatch(addContact(values));
     actions.resetForm();
   };
 
   return (
     <Formik
-      initialValues={INITIAL_CONTACT}
+      initialValues={{ name: '', number: '' }}
       onSubmit={handleSubmit}
       validationSchema={Feedback}
     >
       <Form className={styles.contactForm}>
         <div className={styles.info}>
           <div>
-            <label className={styles.label} htmlFor={nameId}>
-              {LABEL_NAME}
+            <label className={styles.label} htmlFor="name">
+              Name
             </label>
             <Field
               className={styles.input}
-              id={nameId}
+              id="name"
               type="text"
               name="name"
             />
@@ -45,12 +36,12 @@ export const ContactForm = ({ onAddContact }) => {
             </span>
           </div>
           <div>
-            <label className={styles.label} htmlFor={phoneId}>
-              {LABEL_PHONE}
+            <label className={styles.label} htmlFor="number">
+              Phone
             </label>
             <Field
               className={styles.input}
-              id={phoneId}
+              id="number"
               type="tel"
               name="number"
             />
@@ -59,7 +50,7 @@ export const ContactForm = ({ onAddContact }) => {
             </span>
           </div>
         </div>
-        <CustomButton typeBtn="submit">{CAPTION_ADD}</CustomButton>
+        <CustomButton type="submit">Add</CustomButton>
       </Form>
     </Formik>
   );
