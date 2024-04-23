@@ -1,4 +1,4 @@
-// contactsSlice.js
+
 import { createSelector } from 'reselect';
 
 export const selectFilteredContacts = createSelector(

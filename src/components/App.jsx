@@ -6,7 +6,9 @@ import { ContactsList } from './ContactList/ContactsList';
 import { SearchBox } from './SearchBox/SearchBox';
 import { ContactForm } from './ContactForm/ContactForm';
 import { fetchContacts, selectFilteredContacts, selectLoading } from '../redux/contactsSlice';
-import { changeFilter } from '../redux/filtersSlice';
+import { changeFilter } from '../redux/filtersSlice'; // виправлений імпорт
+import { deleteContact, addContact } from '../redux/contactsSlice'; // переконайтеся, що шлях до вашого slice файла вірний
+
 
 import { SEARCH_LABEL, TITLE } from '../auxiliary/constants';
 import styles from './App.module.css';
